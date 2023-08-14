@@ -1,6 +1,7 @@
 from ultralytics import YOLO
 import cv2
 import random
+import time
 
 
 def videoDetection(yolo_model, videofile, threshold):
@@ -15,6 +16,18 @@ def videoDetection(yolo_model, videofile, threshold):
             break
 
         output = yolo_model(frame)[0]
+
+        new_frame_time = time.time()
+        fps = 1/(new_frame_time - pre_frame_time)
+
+        pre_frame_time = new_frame_time
+
+        fps = int(fps)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+
+        cap.set(cv2.CAP_PROP_FPS, fps*2)
+
+        cv2.putText(frame, f'fps: {fps}', (10,100), font, 2, (0,0,255), 3)
 
         boxes = output.boxes.xyxy
         class_ids = output.boxes.cls
