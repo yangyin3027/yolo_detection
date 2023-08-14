@@ -51,7 +51,7 @@ class YoloDetection:
         # create colors mapping to class_ids
         colors = ['r','g','b','y','m','c']
         random.shuffle(colors)
-        colors = [colors[int(i)%len(colors)] for i in class_ids]
+        colors = [colors[int(i%len(colors))] for i in class_ids]
 
         cls_names =[output.names[int(x)] for x in class_ids]
         labels = [f"{cls} {round(s.numpy()*100)}%"
